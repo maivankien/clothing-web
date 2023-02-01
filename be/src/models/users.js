@@ -14,13 +14,14 @@ const userSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true,
     },
     phone: {
         type: String,
-        required: true,
     },
-    userType: null
+    userType: {
+        type: String,
+        default: 'user',
+    }
 }, {
     timestamps: true,
 })
