@@ -3,6 +3,7 @@ const Joi = require('joi')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const userService = require('../services/userService')
+const tokenService = require('../services/tokenService')
 
 class userController {
     async userRegister(req, res, next) {
@@ -85,18 +86,34 @@ class userController {
             expiresIn: "10d"
         })
         // Save token in cookie
-        res.cookie("refreshToken", refreshToken, {
+        res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             path: '/',
             sameSite: 'strict',
         })
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+            sameSite: 'strict',
+        })
+        await tokenService.saveRefeshToken(refreshToken)
         user.password = null
         return res.status(200).json({
             EC: 1,
             message: "Successful",
             user: user,
             accessToken: accessToken,
+        })
+    }
+    async userLogout (req, res) {
+        let result = await tokenService.clearTokenService(req.cookies.refreshToken)
+        await res.clearCookie("accessToken")
+        await res.clearCookie("refreshToken")
+        return res.status(200).json({
+            EC: 1,
+            message: "Successful logout"
         })
     }
 }
