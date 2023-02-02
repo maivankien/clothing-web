@@ -144,7 +144,7 @@ class userController {
         }
         await tokenService.clearTokenService(refreshToken)
 
-        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, user) => {
+        await jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, user) => {
             if (err) {
                 console.log(err)
                 return res.status(200).json({
@@ -155,6 +155,8 @@ class userController {
             newAccessToken = generateAccessToken(user)
             newRefreshToken = generateRefreshToken(user)
             await tokenService.saveRefeshToken(newRefreshToken)
+            await res.clearCookie("accessToken")
+            await res.clearCookie("refreshToken")
             // Save token in cookie
             res.cookie("accessToken", newAccessToken, {
                 httpOnly: true,
