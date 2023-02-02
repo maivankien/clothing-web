@@ -132,7 +132,7 @@ class userController {
         if (!refreshToken) {
             return res.status(200).json({
                 EC: -1,
-                message: "You're not authenticated"
+                message: "You are not logged in"
             })
         }
         let err = await tokenService.findRefreshToken(refreshToken)
@@ -155,8 +155,6 @@ class userController {
             newAccessToken = generateAccessToken(user)
             newRefreshToken = generateRefreshToken(user)
             await tokenService.saveRefeshToken(newRefreshToken)
-            await res.clearCookie("accessToken")
-            await res.clearCookie("refreshToken")
             // Save token in cookie
             res.cookie("accessToken", newAccessToken, {
                 httpOnly: true,
