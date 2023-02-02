@@ -92,18 +92,8 @@ class userController {
                 message: "Incorrect password"
             })
         }
-        let accessToken = jwt.sign({
-            _id: user._id,
-            userType: user.userType
-        }, process.env.JWT_ACCESS_KEY, {
-            expiresIn: "30s"
-        })
-        let refreshToken = jwt.sign({
-            _id: user._id,
-            userType: user.userType
-        }, process.env.JWT_REFRESH_KEY, {
-            expiresIn: "10d"
-        })
+        let accessToken = generateAccessToken(user)
+        let refreshToken = generateRefreshToken(user)
         // Save token in cookie
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
