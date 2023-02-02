@@ -23,6 +23,17 @@ class tokenService {
             return null
         }
     }
+    async findRefreshToken (refreshTokenData) {
+        try {
+            let result = await refreshToken.findOne({
+                refreshToken: refreshTokenData
+            })
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
 }
 
 module.exports = new tokenService()

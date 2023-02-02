@@ -5,6 +5,7 @@ const userController = require('../controllers/userController')
 
 router.post('/register', userController.userRegister)
 router.post('/login', userController.userLogin)
+router.post('/refreshToken', userController.requestRefreshToken)
 router.post('/logout', userController.userLogout)
 
 

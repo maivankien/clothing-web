@@ -5,6 +5,25 @@ const jwt = require('jsonwebtoken')
 const userService = require('../services/userService')
 const tokenService = require('../services/tokenService')
 
+
+const generateAccessToken = (user) => {
+    return jwt.sign({
+        _id: user._id,
+        userType: user.userType
+    }, process.env.JWT_ACCESS_KEY, {
+        expiresIn: "30s"
+    })
+}
+
+const generateRefreshToken = (user) => {
+    return jwt.sign({
+        _id: user._id,
+        userType: user.userType
+    }, process.env.JWT_REFRESH_KEY, {
+        expiresIn: "10d"
+    })
+}
+
 class userController {
     async userRegister(req, res, next) {
         let { email } = req.body
@@ -107,8 +126,55 @@ class userController {
             accessToken: accessToken,
         })
     }
-    async userLogout (req, res) {
-        let result = await tokenService.clearTokenService(req.cookies.refreshToken)
+    async requestRefreshToken(req, res) {
+        const refreshToken = req.cookies.refreshToken
+        let newAccessToken, newRefreshToken
+        if (!refreshToken) {
+            return res.status(200).json({
+                EC: -1,
+                message: "You're not authenticated"
+            })
+        }
+        let err = await tokenService.findRefreshToken(refreshToken)
+        if (err == null) {
+            return res.status(200).json({
+                EC: -1,
+                message: "You're not authenticated"
+            })
+        }
+        await tokenService.clearTokenService(refreshToken)
+
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, user) => {
+            if (err) {
+                console.log(err)
+                return res.status(200).json({
+                    EC: -1,
+                    message: "You're not authenticated"
+                })
+            }
+            newAccessToken = generateAccessToken(user)
+            newRefreshToken = generateRefreshToken(user)
+            await tokenService.saveRefeshToken(newRefreshToken)
+            // Save token in cookie
+            res.cookie("accessToken", newAccessToken, {
+                httpOnly: true,
+                secure: false,
+                path: '/',
+                sameSite: 'strict',
+            })
+            res.cookie("refreshToken", newRefreshToken, {
+                httpOnly: true,
+                secure: false,
+                path: '/',
+                sameSite: 'strict',
+            })
+        })
+        return res.status(200).json({
+            accessToken: newAccessToken,
+        })
+    }
+    async userLogout(req, res) {
+        await tokenService.clearTokenService(req.cookies.refreshToken)
         await res.clearCookie("accessToken")
         await res.clearCookie("refreshToken")
         return res.status(200).json({
@@ -116,6 +182,7 @@ class userController {
             message: "Successful logout"
         })
     }
+
 }
 
 module.exports = new userController()
