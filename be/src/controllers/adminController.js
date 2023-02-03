@@ -11,7 +11,7 @@ const generateAccessToken = (user) => {
         _id: user._id,
         userType: user.userType
     }, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "30s"
+        expiresIn: "1m"
     })
 }
 
@@ -167,6 +167,37 @@ class adminController {
         return res.status(200).json({
             EC: 1,
             message: "Successful logout"
+        })
+    }
+    async getAllUser(req, res) {
+        // Check login
+        try {
+            let checkToken = req.cookies.accessToken
+            let result = jwt.verify(checkToken, process.env.JWT_ACCESS_KEY)
+            console.log(result)
+            if(result.userType == 'user') {
+                return res.status(200).json({
+                    EC: -1,
+                    message: "You have no authority"
+                })
+            }
+            await userService.findUser(result._id)
+        } catch (error) {
+            if (error.name == "TokenExpiredError") {
+                return res.status(200).json({
+                    EC: -1,
+                    message: "Token has expired"
+                })
+            }
+            return res.status(200).json({
+                EC: -1,
+                message: "You need to login"
+            })
+        }
+        let user = await userService.getUser(req.query)
+        return res.status(200).json({
+            EC: 1,
+            data: user
         })
     }
 }

@@ -11,7 +11,7 @@ const generateAccessToken = (user) => {
         _id: user._id,
         userType: user.userType
     }, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "30s"
+        expiresIn: "2h"
     })
 }
 
@@ -61,23 +61,6 @@ class userController {
         })
     }
     async userLogin(req, res) {
-
-        // // Check login
-        // try {
-        //     let checkToken = req.cookies.accessToken
-        //     let result = jwt.verify(checkToken, process.env.JWT_ACCESS_KEY)
-        //     let err = await userService.findUser(result._id)
-        //     console.log(result)
-        //     console.log(err)
-        // } catch (error) {
-        //     console.log(error)
-        //     return res.status(200).json({
-        //         EC: -1,
-        //         message: "You need to login"
-        //     })
-        // }
-        // ///
-
         let user = await userService.findUser(req.body.email)
         if (user == null) {
             return res.status(200).json({
