@@ -4,14 +4,16 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const userService = require('../services/userService')
 const tokenService = require('../services/tokenService')
-
+const productService = require('../services/productService')
+const fileService = require('../services/fileService')
+const path = require('path')
 
 const generateAccessToken = (user) => {
     return jwt.sign({
         _id: user._id,
         userType: user.userType
     }, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "1m"
+        expiresIn: "10m"
     })
 }
 
@@ -170,35 +172,18 @@ class adminController {
         })
     }
     async getAllUser(req, res) {
-        // Check login
-        try {
-            let checkToken = req.cookies.accessToken
-            let result = jwt.verify(checkToken, process.env.JWT_ACCESS_KEY)
-            console.log(result)
-            if(result.userType == 'user') {
-                return res.status(200).json({
-                    EC: -1,
-                    message: "You have no authority"
-                })
-            }
-            await userService.findUser(result._id)
-        } catch (error) {
-            if (error.name == "TokenExpiredError") {
-                return res.status(200).json({
-                    EC: -1,
-                    message: "Token has expired"
-                })
-            }
-            return res.status(200).json({
-                EC: -1,
-                message: "You need to login"
-            })
-        }
         let user = await userService.getUser(req.query)
         return res.status(200).json({
             EC: 1,
             data: user
         })
+    }
+    async postCreateProduct(req, res) {
+        const filePaths = req.files.map((file) => file.filename)
+        // const finalPath = path.resolve(req.uploadPath, req.finalName)
+        // req.body.finalPath = finalPath
+        req.body.finalPath = filePaths
+        res.json(req.body)
     }
 }
 
