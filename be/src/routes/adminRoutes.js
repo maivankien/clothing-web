@@ -14,8 +14,7 @@ router.post('/refreshToken', adminController.requestRefreshToken)
 
 router.get('/getUser', adminMiddleware.checkLogin, adminController.getAllUser)
 
-// router.post('/createProduct', adminMiddleware.checkLogin, fileService.uploadSingleFile.array("img", 20), productMiddleware.validateProduct, adminController.postCreateProduct)
-router.post('/createProduct', adminMiddleware.checkLogin, fileService.upload.array("img", 20), productMiddleware.validateProduct, fileService.uploadSingleFile.array("img", 20), adminController.postCreateProduct)
+router.post('/createProduct', adminMiddleware.checkLogin, fileService.uploadSingleFile.array("img", 20), productMiddleware.validateProduct, adminController.postCreateProduct)
 
 
 module.exports = router

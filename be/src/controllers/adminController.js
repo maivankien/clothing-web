@@ -146,8 +146,11 @@ class adminController {
         })
     }
     async postCreateProduct(req, res) {
-        res.json(req.body)
-        
+        let product = await productService.createAProduct(req.body)
+        return res.status(200).json({
+            EC: 1,
+            data: product
+        })
     }
 }
 
