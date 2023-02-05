@@ -10,7 +10,7 @@ const generateAccessToken = (user) => {
         _id: user._id,
         userType: user.userType
     }, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "10m"
+        expiresIn: "1h"
     })
 }
 
@@ -145,13 +145,7 @@ class adminController {
             data: user
         })
     }
-    async postCreateProduct(req, res) {
-        let product = await productService.createAProduct(req.body)
-        return res.status(200).json({
-            EC: 1,
-            data: product
-        })
-    }
+
 }
 
 

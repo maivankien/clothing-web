@@ -11,7 +11,7 @@ const generateAccessToken = (user) => {
         _id: user._id,
         userType: user.userType
     }, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "2m"
+        expiresIn: "1h"
     })
 }
 
