@@ -16,7 +16,8 @@ class fileService {
                 req.finalName = finalName
             }
         })
-    });
+    })
+    upload = multer()
 }
 
 module.exports = new fileService()
