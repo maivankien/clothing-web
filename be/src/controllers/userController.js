@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const userService = require('../services/userService')
 const tokenService = require('../services/tokenService')
-
+const cartService = require('../services/cartService')
 
 const generateAccessToken = (user) => {
     return jwt.sign({
@@ -53,6 +53,7 @@ class userController {
         const hash = await bcrypt.hash(password, 10)
         req.body.password = hash
         let user = await userService.userRegisterService(req.body)
+        await cartService.createCart(user._id)
         user.password = null
         return res.status(200).json({
             EC: 1,

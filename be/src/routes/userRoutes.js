@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 const userController = require('../controllers/userController')
+const userMiddleware = require('../middlewares/userMiddleware')
 const productController = require('../controllers/productController')
+const cartController = require('../controllers/cartController')
 
 router.post('/register', userController.userRegister)
 router.post('/login', userController.userLogin)
@@ -11,6 +13,8 @@ router.post('/logout', userController.userLogout)
 
 router.get('/getProduct/:id', productController.getProduct)
 router.get('/getAllProduct', productController.getAllProduct)
+
+router.post('/addCart', userMiddleware.checkLogin, cartController.addProductToCart)
 
 
 module.exports = router

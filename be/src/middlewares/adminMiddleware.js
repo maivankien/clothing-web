@@ -47,7 +47,7 @@ module.exports = {
                     message: "You have no authority"
                 })
             }
-            await userService.findUser(result._id)
+            // await userService.findUser(result._id)
         } catch (error) {
             console.log(error)
             if (error.name == "TokenExpiredError") {
