@@ -19,6 +19,6 @@ router.post('/createProduct', adminMiddleware.checkLogin, fileService.uploadFile
 router.put('/updateProduct/:id', adminMiddleware.checkLogin, productMiddleware.findProduct, fileService.uploadFile.array("img", 20), productMiddleware.validateProduct, productController.putUpdateProduct)
 router.get('/getProduct/:id', adminMiddleware.checkLogin, productController.getProduct)
 router.get('/getAllProduct', adminMiddleware.checkLogin, productController.getAllProduct)
-
+router.delete('/deleteProduct/:id', adminMiddleware.checkLogin, productController.deleteAProduct)
 
 module.exports = router

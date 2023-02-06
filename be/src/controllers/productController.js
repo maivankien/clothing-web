@@ -23,7 +23,14 @@ class productController {
         })
     }
     async putUpdateProduct(req, res) {
-        let product  =await productService.updateAProductService(req.params.id, req.body)
+        let product = await productService.updateAProductService(req.params.id, req.body)
+        return res.status(200).json({
+            EC: 1,
+            data: product
+        })
+    }
+    async deleteAProduct(req, res) {
+        let product = await productService.deleteAProductService(req.params.id)
         return res.status(200).json({
             EC: 1,
             data: product

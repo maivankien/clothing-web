@@ -35,7 +35,16 @@ class productService {
     }
     async updateAProductService(id, data) {
         try {
-            let result = await Product.updateOne({_id: id}, data)
+            let result = await Product.updateOne({ _id: id }, data)
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+    async deleteAProductService(id) {
+        try {
+            let result = await Product.delete({ _id: id })
             return result
         } catch (error) {
             console.log(error)
