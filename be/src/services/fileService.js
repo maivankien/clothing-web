@@ -3,7 +3,7 @@ const multer = require('multer')
 
 class fileService {
     // create multer object
-    uploadSingleFile = multer({
+    uploadFile = multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {
                 const uploadPath = path.resolve(__dirname, '../public/images/products')
@@ -17,7 +17,6 @@ class fileService {
             }
         })
     })
-    upload = multer()
 }
 
 module.exports = new fileService()

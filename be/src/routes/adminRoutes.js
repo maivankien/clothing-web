@@ -15,7 +15,8 @@ router.post('/refreshToken', adminController.requestRefreshToken)
 
 router.get('/getUser', adminMiddleware.checkLogin, adminController.getAllUser)
 
-router.post('/createProduct', adminMiddleware.checkLogin, fileService.uploadSingleFile.array("img", 20), productMiddleware.validateProduct, productController.postCreateProduct)
+router.post('/createProduct', adminMiddleware.checkLogin, fileService.uploadFile.array("img", 20), productMiddleware.validateProduct, productController.postCreateProduct)
+router.put('/updateProduct/:id', adminMiddleware.checkLogin, productMiddleware.findProduct, fileService.uploadFile.array("img", 20), productMiddleware.validateProduct, productController.putUpdateProduct)
 router.get('/getProduct/:id', adminMiddleware.checkLogin, productController.getProduct)
 router.get('/getAllProduct', adminMiddleware.checkLogin, productController.getAllProduct)
 

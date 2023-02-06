@@ -33,6 +33,15 @@ class productService {
             return null
         }
     }
+    async updateAProductService(id, data) {
+        try {
+            let result = await Product.updateOne({_id: id}, data)
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
 }
 
 module.exports = new productService()
