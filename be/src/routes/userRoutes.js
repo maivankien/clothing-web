@@ -16,6 +16,6 @@ router.get('/getProduct/:id', productController.getProduct)
 router.get('/getAllProduct', productController.getAllProduct)
 
 router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCart, cartController.addProductToCart)
-
+router.get('/getCart', userMiddleware.checkLogin, cartController.getCart)
 
 module.exports = router

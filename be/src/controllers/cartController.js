@@ -16,6 +16,13 @@ class cartController {
             })
         }
     }
+    async getCart(req, res) {
+        const cart = await cartService.getCartService(req.query, req.body.userId)
+        return res.status(200).json({
+            EC: 1,
+            data: cart
+        })
+    }
 }
 
 module.exports = new cartController()
