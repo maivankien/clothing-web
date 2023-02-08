@@ -33,5 +33,28 @@ module.exports = {
             }
         }
         next()
+    },
+    async updateCart(req, res, next) {
+        const cart = await cartService.findCart(req.body.userId)
+        if (cart == null) {
+            return res.status(200).json({
+                EC: -1,
+                message: "Error"
+            })
+        }
+        const product = await productService.getAProductService(req.body.id)
+        if(product == null) {
+            return res.status(200).json({
+                EC: -1,
+                message: "Error"
+            })
+        }
+        if (parseInt(req.body.quantity) > product.quantity) {
+            return res.status(200).json({
+                EC: -1,
+                message: `You can only buy up to ${product.quantity} products`
+            })
+        }
+        next()
     }
 }

@@ -23,6 +23,13 @@ class cartController {
             data: cart
         })
     }
+    async updateCart(req, res) {
+        const cart = await cartService.updateCartService(req.body)
+        return res.status(200).json({
+            EC: 1,
+            data: cart
+        })
+    }
 }
 
 module.exports = new cartController()
