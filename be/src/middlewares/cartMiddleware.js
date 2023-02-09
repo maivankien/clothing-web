@@ -14,7 +14,7 @@ module.exports = {
         if(product == null) {
             return res.status(200).json({
                 EC: -1,
-                message: "Error"
+                message: "Error a"
             })
         }
         if (parseInt(req.body.quantity) > product.quantity) {

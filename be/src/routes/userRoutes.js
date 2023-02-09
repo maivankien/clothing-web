@@ -21,7 +21,8 @@ router.get('/getCart', userMiddleware.checkLogin, cartController.getCart)
 router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCart, cartController.addProductToCart)
 router.post('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
 
-router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
 router.get('/order', userMiddleware.checkLogin, orderController.getOrder)
+router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
+router.delete('/order/:id', userMiddleware.checkLogin, orderController.cancelOrder)
 
 module.exports = router
