@@ -6,6 +6,8 @@ const userMiddleware = require('../middlewares/userMiddleware')
 const cartMiddleware = require('../middlewares/cartMiddleware')
 const productController = require('../controllers/productController')
 const cartController = require('../controllers/cartController')
+const orderMiddleware = require('../middlewares/orderMiddleware')
+const orderController = require('../controllers/orderController')
 
 router.post('/register', userController.userRegister)
 router.post('/login', userController.userLogin)
@@ -19,5 +21,6 @@ router.get('/getCart', userMiddleware.checkLogin, cartController.getCart)
 router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCart, cartController.addProductToCart)
 router.post('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
 
+router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
 
 module.exports = router
