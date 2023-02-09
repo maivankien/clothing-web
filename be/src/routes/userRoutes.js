@@ -22,5 +22,6 @@ router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCa
 router.post('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
 
 router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
+router.get('/order', userMiddleware.checkLogin, orderController.getOrder)
 
 module.exports = router

@@ -9,6 +9,13 @@ class orderController {
             data: order
         })
     }
+    async getOrder(req, res) {
+        let orders = await orderService.getAllOrderService(req.body)
+        return res.status(200).json({
+            EC: 1,
+            data: orders
+        })
+    }
 }
 
 module.exports = new orderController()
