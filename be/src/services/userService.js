@@ -29,6 +29,18 @@ class userService {
         let result = await User.find(filter).skip(offset).limit(limit).exec()
         return result
     }
+    async updateInforService(data) {
+        try {
+            let result = await User.findById(data.userId)
+            result.address = data.address
+            result.phone = data.phone
+            await result.save()
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
 }
 
 module.exports = new userService()

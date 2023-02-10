@@ -145,7 +145,6 @@ class adminController {
             data: user
         })
     }
-
 }
 
 

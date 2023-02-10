@@ -156,7 +156,14 @@ class userController {
             message: "Successful logout"
         })
     }
-
+    async updateInfor(req, res) {
+        let user = await userService.updateInforService(req.body)
+        return res.status(200).json({
+            EC: 1,
+            message: "Successful update",
+            data: user
+        })
+    }
 }
 
 module.exports = new userController()

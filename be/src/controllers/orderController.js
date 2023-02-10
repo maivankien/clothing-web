@@ -23,6 +23,14 @@ class orderController {
             data: orders
         })
     }
+    async updateOrder(req, res) {
+        let order = await orderService.updateOrderService(req.params.id, req.body)
+        return res.status(200).json({
+            EC: 1,
+            message: "Order Success",
+            data: order
+        })
+    }
 }
 
 module.exports = new orderController()

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const adminController = require('../controllers/adminController')
+const orderController = require('../controllers/orderController')
 const productController = require('../controllers/productController')
 const adminMiddleware = require('../middlewares/adminMiddleware')
 const productMiddleware = require('../middlewares/productMiddleware')
@@ -20,5 +21,7 @@ router.put('/updateProduct/:id', adminMiddleware.checkLogin, productMiddleware.f
 router.get('/getProduct/:id', adminMiddleware.checkLogin, productController.getProduct)
 router.get('/getAllProduct', adminMiddleware.checkLogin, productController.getAllProduct)
 router.delete('/deleteProduct/:id', adminMiddleware.checkLogin, productController.deleteAProduct)
+
+router.put('/order/:id', adminMiddleware.checkLogin, orderController.updateOrder)
 
 module.exports = router
