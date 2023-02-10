@@ -19,7 +19,7 @@ router.get('/getAllProduct', productController.getAllProduct)
 
 router.get('/getCart', userMiddleware.checkLogin, cartController.getCart)
 router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCart, cartController.addProductToCart)
-router.post('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
+router.put('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
 
 router.get('/order', userMiddleware.checkLogin, orderController.getOrder)
 router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
