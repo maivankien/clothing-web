@@ -10,10 +10,23 @@ class orderController {
         })
     }
     async getOrder(req, res) {
-        let orders = await orderService.getAllOrderService(req.body)
+        let orders
+        if(req.body.userId) {
+            orders = await orderService.getAllOrderService(req.body)
+        }
+        else {
+            orders = await orderService.allOrderService(req.query)
+        }
         return res.status(200).json({
             EC: 1,
             data: orders
+        })
+    }
+    async getAOrder(req, res) {
+        let order = await orderService.getAOrderService(req.params.id)
+        return res.status(200).json({
+            EC: 1,
+            data: order
         })
     }
     async cancelOrder(req, res) {

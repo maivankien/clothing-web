@@ -1,6 +1,7 @@
 const Order = require('../models/orders')
 const Cart = require('../models/carts')
 const Product = require('../models/products')
+const User = require('../models/users')
 
 class orderService {
     async addOrderService(data) {
@@ -30,6 +31,31 @@ class orderService {
         try {
             let orders = await Order.find({ userId: data.userId }) // populate('items.product')
             return orders
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+    async allOrderService(queryString) {
+        try {
+            const { page, limit } = queryString
+            const offset = (page - 1) * limit
+            let orders = await Order.find().skip(offset).limit(limit).exec()
+            return orders
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+    async getAOrderService(id) {
+        try {
+            let order = await Order.findById(id)
+            let user = await User.findById(order.userId)
+            const result = {}
+            result.order = order
+            result.user = user
+            result.user.password = null
+            return result
         } catch (error) {
             console.log(error)
             return null

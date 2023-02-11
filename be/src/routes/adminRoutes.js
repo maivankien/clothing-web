@@ -22,6 +22,8 @@ router.get('/getProduct/:id', adminMiddleware.checkLogin, productController.getP
 router.get('/getAllProduct', adminMiddleware.checkLogin, productController.getAllProduct)
 router.delete('/deleteProduct/:id', adminMiddleware.checkLogin, productController.deleteAProduct)
 
+router.get('/order', adminMiddleware.checkLogin, orderController.getOrder)
+router.get('/order/:id', adminMiddleware.checkLogin, orderController.getAOrder)
 router.put('/order/:id', adminMiddleware.checkLogin, orderController.updateOrder)
 
 module.exports = router
