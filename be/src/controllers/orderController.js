@@ -11,7 +11,7 @@ class orderController {
     }
     async getOrder(req, res) {
         let orders
-        if(req.body.userId) {
+        if (req.body.userId) {
             orders = await orderService.getAllOrderService(req.body)
         }
         else {
@@ -23,7 +23,13 @@ class orderController {
         })
     }
     async getAOrder(req, res) {
-        let order = await orderService.getAOrderService(req.params.id)
+        let order
+        if (req.body.userId) {
+            order = await orderService.aOrderService(req.body.userId, req.params.id)
+        }
+        else {
+            order = await orderService.getAOrderService(req.params.id)
+        }
         return res.status(200).json({
             EC: 1,
             data: order

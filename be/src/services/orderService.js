@@ -61,6 +61,18 @@ class orderService {
             return null
         }
     }
+    async aOrderService(userId, id) {
+        try {
+            let order = await Order.findOne({
+                userId,
+                _id: id
+            })
+            return order
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
     async cancelAOrder(userId, id) {
         try {
             let order = await Order.findOne({ userId, _id: id })

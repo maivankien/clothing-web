@@ -11,7 +11,7 @@ const orderController = require('../controllers/orderController')
 
 router.post('/register', userController.userRegister)
 router.post('/login', userController.userLogin)
-router.post('/logout', userController.userLogout)
+router.post('/logout', userMiddleware.checkLogin, userController.userLogout)
 router.post('/infor', userMiddleware.checkLogin, userController.updateInfor)
 router.post('/refreshToken', userMiddleware.checkLogin, userController.requestRefreshToken)
 
@@ -23,6 +23,7 @@ router.post('/addCart', userMiddleware.checkLogin, cartMiddleware.addProductToCa
 router.put('/updateCart', userMiddleware.checkLogin, cartMiddleware.updateCart, cartController.updateCart)
 
 router.get('/order', userMiddleware.checkLogin, orderController.getOrder)
+router.get('/order/:id', userMiddleware.checkLogin, orderController.getAOrder)
 router.post('/order', userMiddleware.checkLogin, orderMiddleware.purchase, orderController.addOrder)
 router.delete('/order/:id', userMiddleware.checkLogin, orderController.cancelOrder)
 
