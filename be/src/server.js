@@ -11,6 +11,13 @@ const app = express()
 const port = process.env.PORT || 3000
 const hostname = process.env.HOST_NAME
 
+// Fix CORS
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+})
+
 mongoose.set('strictQuery', false)
 
 
@@ -21,12 +28,6 @@ app.use(cookieParser())
 app.use(express.json()) // for json
 app.use(express.urlencoded({ extended: true }))
 
-// Fix CORS
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-})
 
 route(app)
 

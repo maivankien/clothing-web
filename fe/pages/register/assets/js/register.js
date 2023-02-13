@@ -10,7 +10,7 @@ document.querySelector('.form-register').addEventListener('submit', function (ev
     });
     console.log(data)
 
-    fetch('https://cors-anywhere.herokuapp.com/https://maivankien-clothing.onrender.com/api/user/register', {
+    fetch('https://maivankien-clothing.onrender.com/api/user/register', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
