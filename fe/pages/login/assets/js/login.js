@@ -8,7 +8,7 @@ document.querySelector('.form-login').addEventListener('submit', async (event) =
         data[key] = value;
     })
     try {
-        let result = await fetch('http://localhost:3000/api/user/login', {
+        let result = await fetch('https://maivankien-clothing.onrender.com//api/user/login', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
