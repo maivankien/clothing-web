@@ -6,17 +6,15 @@ const productService = require('../services/productService')
 module.exports = {
     async validateProduct(req, res, next) {
         const fileUpload = req.files
-        if(fileUpload == undefined) {
-            return res.status(200).json({
-                EC: -1,
-                message: "No data"
+        if(!fileUpload) {
+            return res.status(400).json({
+                message: "No file"
             })
         }
         const filePaths = fileUpload.map((file) => file.path)
         const filePathUrls = filePaths.map(file => file.replace(/\\/g, "/"))
         if (fileUpload.length === 0 || fileUpload.length > 20) {
             return res.status(200).json({
-                EC: -1,
                 message: "Invalid number of files",
             })
         }
@@ -27,8 +25,7 @@ module.exports = {
                         if(err) console.log(err)
                     })
                 });
-                return res.status(200).json({
-                    EC: -1,
+                return res.status(400).json({
                     message: "Invalid file format",
                 })
             }
@@ -46,14 +43,12 @@ module.exports = {
 
         const { error } = Schema.validate(req.body, { abortEarly: false })
         if (error) {
-            console.log(error)
             filePathUrls.forEach(file => {
                 fs.unlink(file, (err) => {
                     if(err) console.log(err)
                 })
             });
-            return res.status(200).json({
-                EC: -1,
+            return res.status(400).json({
                 message: error
             })
         }
@@ -61,9 +56,8 @@ module.exports = {
     },
     async findProduct(req, res, next) {
         let product = await productService.getAProductService(req.params.id)
-        if(product == null) {
-            return res.status(200).json({
-                EC: -1,
+        if(!product) {
+            return res.status(404).json({
                 message: "No product exists"
             })
         }

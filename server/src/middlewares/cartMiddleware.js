@@ -4,30 +4,26 @@ const productService = require('../services/productService')
 module.exports = {
     async addProductToCart(req, res, next) {
         const cart = await cartService.findCart(req.body.userId)
-        if (cart == null) {
-            return res.status(200).json({
-                EC: -1,
-                message: "Error"
+        if (!cart) {
+            return res.status(404).json({
+                message: "No data found"
             })
         }
         const product = await productService.getAProductService(req.body.id)
-        if(product == null) {
-            return res.status(200).json({
-                EC: -1,
-                message: "Error a"
+        if(!product) {
+            return res.status(404).json({
+                message: "No data found"
             })
         }
         if (parseInt(req.body.quantity) > product.quantity) {
-            return res.status(200).json({
-                EC: -1,
+            return res.status(400).json({
                 message: `You can only buy up to ${product.quantity} products`
             })
         }
         const checkCart = cart.items.find((item => item.product == req.body.id))
-        if (checkCart !== undefined) {
+        if (checkCart) {
             if (checkCart.quantity + parseInt(req.body.quantity) > product.quantity) {
-                return res.status(200).json({
-                    EC: -1,
+                return res.status(400).json({
                     message: `You can only buy up to ${product.quantity} products`
                 })
             }
@@ -36,22 +32,19 @@ module.exports = {
     },
     async updateCart(req, res, next) {
         const cart = await cartService.findCart(req.body.userId)
-        if (cart == null) {
-            return res.status(200).json({
-                EC: -1,
-                message: "Error"
+        if (!cart) {
+            return res.status(404).json({
+                message: "No data found"
             })
         }
         const product = await productService.getAProductService(req.body.id)
-        if(product == null) {
-            return res.status(200).json({
-                EC: -1,
-                message: "Error"
+        if(!product) {
+            return res.status(404).json({
+                message: "No data found"
             })
         }
         if (parseInt(req.body.quantity) > product.quantity) {
-            return res.status(200).json({
-                EC: -1,
+            return res.status(400).json({
                 message: `You can only buy up to ${product.quantity} products`
             })
         }
