@@ -7,9 +7,8 @@ module.exports = {
     async validateRegister(req, res, next) {
         let { email } = req.body
         let err = await userService.findUser(email)
-        if (err !== null) {
-            return res.status(200).json({
-                EC: -1,
+        if (err) {
+            return res.status(403).json({
                 message: "Account already exists"
             })
         }
@@ -23,15 +22,12 @@ module.exports = {
         })
         const { error } = Schema.validate(req.body, { abortEarly: false })
         if (error) {
-            console.log(error)
-            return res.status(200).json({
-                EC: -1,
+            return res.status(400).json({
                 message: error
             })
         }
         if (req.body.secretAdmin !== process.env.SECRET_KEY_ADMIN) {
-            return res.status(200).json({
-                EC: -1,
+            return res.status(403).json({
                 message: 'Secret code is incorrect'
             })
         }
@@ -39,26 +35,16 @@ module.exports = {
     },
     async checkLogin(req, res, next) {
         try {
-            let checkToken = req.cookies.accessToken
+            let checkToken = req.headers.accessToken
             let result = jwt.verify(checkToken, process.env.JWT_ACCESS_KEY)
             if (result.userType == 'user') {
-                return res.status(200).json({
-                    EC: -1,
+                return res.status(403).json({
                     message: "You have no authority"
                 })
             }
-            // await userService.findUser(result._id)
         } catch (error) {
-            console.log(error)
-            if (error.name == "TokenExpiredError") {
-                return res.status(200).json({
-                    EC: -1,
-                    message: "Token has expired"
-                })
-            }
-            return res.status(200).json({
-                EC: -1,
-                message: "You need to login"
+            return res.status(401).json({
+                message: "Not authorized."
             })
         }
         next()
